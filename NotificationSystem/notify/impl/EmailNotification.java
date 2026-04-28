@@ -5,7 +5,7 @@ import notify.Notification;
 
 public class EmailNotification implements Notification {
     @Override
-    public void sendNotification(int userId, Event event) {
+    public synchronized void sendNotification(int userId, Event event) {
         System.out.println("sending EMAIL notification to "+ userId + " with event '" + event.getMessage()+"'");
     }
 }

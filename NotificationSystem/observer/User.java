@@ -36,7 +36,7 @@ public class User implements Observer {
     }
 
     @Override
-    public void update(Event event) {
+    public synchronized void update(Event event) {
         for (Notification notification: notifications){
             Event eventCopy = new Event(event.getId(), event.getMessage(), event.getPriority());
             eventCopy.setSource(notification.getClass().getSimpleName());

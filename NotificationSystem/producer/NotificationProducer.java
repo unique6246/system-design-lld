@@ -3,39 +3,46 @@ package producer;
 import model.Event;
 import model.Priority;
 import observer.Observer;
+import observer.User;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NotificationProducer implements Subject {
 
-    List<Observer> users;
+    List<User> users;
 
     public NotificationProducer() {
         this.users = new CopyOnWriteArrayList<>();
     }
 
     @Override
-    public void subscribe(Observer user) {
-        users.add(user);
+    public synchronized void subscribe(User user) {
+        if (!users.contains(user)) {
+            users.add(user);
+        }
     }
 
     @Override
-    public void unsubscribe(Observer user) {
+    public synchronized void unsubscribe(User user) {
         users.remove(user);
     }
 
     @Override
-    public void notifyAll(Event event) {
+    public synchronized void notifyAll(Event event) {
         for(Observer user: users){
             user.update(event);
         }
     }
 
-    public void pushEvent(Event event, Priority priority){
+    public synchronized void pushEvent(Event event, Priority priority){
         if(event.getPriority().ordinal() >= priority.ordinal()){
             notifyAll(event);
         }
+    }
+
+    public synchronized List<User> getUsers() {
+        return users;
     }
 
 }

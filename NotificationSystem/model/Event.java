@@ -14,7 +14,6 @@ public class Event {
         this.id = id;
         this.message = message;
         this.priority = priority;
-        this.source = "";
         this.time = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
     }
 
